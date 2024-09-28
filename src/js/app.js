@@ -1,5 +1,30 @@
 window.SQR = window.SQR || {}
 
+let snd = null;
+const playingList = [];
+const PLAY_TIME = 5000; // 5秒
+
+window.onload = ()=>{
+    console.log("onload!!");
+
+	snd = new Howl({
+		src: ["../assets/sample1.wav"],
+		loop: false,
+		volume: 1.0,
+        sprite: {
+            play1: [0, PLAY_TIME],
+            play2: [10000, PLAY_TIME],
+            play3: [20000, PLAY_TIME],
+        },
+		onplay: ()=>{
+			console.log("サウンド再生");
+		},
+		onend: ()=>{
+			console.log("サウンド終了");
+		}
+	});
+}
+
 SQR.reader = (() => {
     /**
      * getUserMedia()に非対応の場合は非対応の表示をする
@@ -25,10 +50,10 @@ SQR.reader = (() => {
         const code = jsQR(imageData.data, canvas.width, canvas.height)
 
         if (code) {
-            SQR.modal.open(code.data)
-        } else {
-            setTimeout(checkQRUseLibrary, 200)
+            soundPlay(code.data);
         }
+
+        setTimeout(checkQRUseLibrary, 200)
     }
 
     /**
@@ -41,15 +66,30 @@ SQR.reader = (() => {
             .then((barcodes) => {
                 if (barcodes.length > 0) {
                     for (let barcode of barcodes) {
-                        SQR.modal.open(barcode.rawValue)
+                        soundPlay(barcode.data);
                     }
-                } else {
-                    setTimeout(checkQRUseBarcodeDetector, 200)
                 }
+                setTimeout(checkQRUseBarcodeDetector, 200)
             })
             .catch(() => {
                 console.error('Barcode Detection failed, boo.')
             })
+    }
+
+    const soundPlay = (data) => {
+        if (!data.startsWith('play')) {
+            return
+        }
+
+        if (!playingList.includes(data)) {
+            playingList.push(data);
+            snd.play(data);
+
+            // 5秒後に再度読み込めるようにする
+            setTimeout(() => {
+                playingList.splice(playingList.indexOf(data), 1);
+            }, PLAY_TIME)
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ workbox.routing.registerRoute(
 )
 
 workbox.routing.registerRoute(
-    new RegExp(/(.*\.js|.*\.css|.*\.jpg|.*\.png|.*\.ico)/),
+    new RegExp(/(.*\.js|.*\.css|.*\.jpg|.*\.png|.*\.ico|.*\.wav)/),
     new workbox.strategies.StaleWhileRevalidate({
         cacheName: 'assets',
         plugins: [
