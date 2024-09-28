@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: ./docker/web
+    ports:
+      - "${DOCKER_LISTEN_HOST}:80"
+    volumes:
+      - .:/usr/share/nginx/html
+      - ./docker/web/nginx.conf:/etc/nginx/nginx.conf
