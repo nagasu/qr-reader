@@ -4,6 +4,14 @@
         <meta charset="UTF-8">
         <style>div{margin: 20px;}</style>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.min.css"/>
+        <link rel="manifest" href="./manifest.json" />
+        <link rel="manifest" href="manifest.webmanifest" />
+        <script
+            async
+            src="https://cdn.jsdelivr.net/npm/pwacompat@2.0.9/pwacompat.min.js"
+            integrity="sha384-VcI6S+HIsE80FVM1jgbd6WDFhzKYA0PecD/LcIyMQpT4fMJdijBh0I7Iblaacawc"
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
         <div>
@@ -19,5 +27,13 @@
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js" defer></script>
         <script src="//cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.js" defer></script>
         <script src="/js/sample.js"></script>
+        <script type="text/javascript">
+            if('serviceWorker' in navigator) {
+            navigator.serviceWorker
+                .register('/sw2.js')
+                .then(function() { console.log("Service Worker Registered"); })
+                .catch(function() { console.log("Service Worker Not Registered"); });
+            }
+        </script>
     </body>
 </html>

@@ -2,24 +2,30 @@ window.SQR = window.SQR || {}
 
 let snd = null;
 const playingList = [];
-const PLAY_TIME = 5000; // 5秒
+const PLAY_TIME = 1900; // 1単語の再生時間
+const WAITING_PLAY_TIME = PLAY_TIME + 1000; // 再生後の待ち時間
 
 window.onload = ()=>{
-    console.log("onload!!");
-
 	snd = new Howl({
-		src: ["../assets/sample1.wav"],
+		src: [
+            "../assets/english1.ogg",
+            "../assets/english1.m4a",
+            "../assets/english1.mp3",
+        ],
 		loop: false,
 		volume: 1.0,
         sprite: {
             play1: [0, PLAY_TIME],
-            play2: [10000, PLAY_TIME],
-            play3: [20000, PLAY_TIME],
+            play2: [2000, PLAY_TIME],
+            play3: [4000, PLAY_TIME],
         },
-		onplay: ()=>{
+        onload: () => {
+            console.log("サウンド準備完了");
+        },
+		onplay: () => {
 			console.log("サウンド再生");
 		},
-		onend: ()=>{
+		onend: () => {
 			console.log("サウンド終了");
 		}
 	});
@@ -66,7 +72,7 @@ SQR.reader = (() => {
             .then((barcodes) => {
                 if (barcodes.length > 0) {
                     for (let barcode of barcodes) {
-                        soundPlay(barcode.data);
+                        soundPlay(barcode.rawValue);
                     }
                 }
                 setTimeout(checkQRUseBarcodeDetector, 200)
@@ -88,7 +94,7 @@ SQR.reader = (() => {
             // 5秒後に再度読み込めるようにする
             setTimeout(() => {
                 playingList.splice(playingList.indexOf(data), 1);
-            }, PLAY_TIME)
+            }, WAITING_PLAY_TIME)
         }
     }
 
