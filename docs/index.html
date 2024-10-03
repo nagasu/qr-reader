@@ -23,54 +23,15 @@
   </style>
 </head>
 <body>
-  <h1>QRコードリーダー7</h1>
+  <h1>QRコードリーダー8</h1>
   <video id="video" autoplay></video>
   <canvas id="canvas"></canvas>
   <p id="output">QRコードをスキャンしてください</p>
 
-  <!-- <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.min.js"></script> -->
   <script src="./js/jsQR.js"></script>
+  <script src="./js/howler.min.js"></script>
+  <script src="./js/app.js"></script>
   <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d', { willReadFrequently: true });
-    const output = document.getElementById('output');
-
-    // 音声ファイルのロード
-    // const sound = new Howl({
-    //   src: ['./assets/english1.mp3'],  // 音声ファイルのパス
-    //   volume: 1.0,
-    //   sprite: {
-    //     play1: [0, 2000],
-    //   },
-    // });
-
-    // カメラのアクセス許可を要求
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-      .then(stream => {
-        video.srcObject = stream;
-        video.setAttribute('playsinline', true);  // iOS対応
-        video.play();
-        requestAnimationFrame(tick);
-      });
-
-    function tick() {
-      if (video.readyState === video.HAVE_ENOUGH_DATA) {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, canvas.width, canvas.height);
-        if (code) {
-          output.textContent = `QRコード内容: ${code.data}`;
-
-          // 音声再生
-          // sound.play('play1');
-        }
-      }
-      requestAnimationFrame(tick);
-    }
-
     if('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('./sw.js')

@@ -10,7 +10,9 @@ const STATIC_DATA = [
     "/assets/english1.ogg",
     "/assets/english1.m4a",
     "/assets/english1.mp3",
-    "/js/jsQR.js"
+    "/js/jsQR.js",
+    "/js/howler.min.js",
+    "/js/app.js"
 ];
 
 self.addEventListener('install', function(e) {
