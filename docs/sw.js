@@ -1,21 +1,55 @@
-var CACHE_DYNAMIC_VERSION = 'dynamic-v2';
+var CACHE_VERSION = 'qr-reader-v1.0.0';
+
+const CACHE_KEYS = [
+  CACHE_VERSION
+];
 
 const STATIC_DATA = [
     '/index.html',
     '/favicon.ico',
+    "/assets/english1.ogg",
+    "/assets/english1.m4a",
+    "/assets/english1.mp3",
+    "/js/jsQR.js"
 ];
 
 self.addEventListener('install', function(e) {
     console.log('[sw] install')
     e.waitUntil(
-        caches.open('cache_v1').then(function(cache) {
+        caches.open(CACHE_VERSION).then(function(cache) {
             return cache.addAll(STATIC_DATA);
         })
     );
 });
 
+self.addEventListener('activate', event => {
+  console.log('[sw] activate');
+    event.waitUntil(
+      caches.keys().then(keys => {
+        return Promise.all(
+          keys.filter(key => {
+            return !CACHE_KEYS.includes(key);
+          }).map(key => {
+            console.log('[sw] cache key delete', key);
+            return caches.delete(key);
+          })
+        );
+      })
+    );
+  });
+
 self.addEventListener('fetch', event => {
     console.log('[sw] fetch request', event.request);
+    const url = event.request.url;
+
+    if (
+      url.startsWith('chrome-extension') ||
+      url.includes('extension')
+    ) {
+      console.log('[sw] fetch request skip', event.request.url);
+      return;
+    }
+
     event.respondWith(
         // キャッシュの存在チェック
         caches.match(event.request)
@@ -27,15 +61,11 @@ self.addEventListener('fetch', event => {
                     return response;
                 } else {
                     console.log('[sw] fetch response nothing');
-                    // キャッシュがなければリクエストを投げて、レスポンスをキャッシュに入れる
                     return fetch(event.request)
                         .then(res => {
-                            return caches.open(CACHE_DYNAMIC_VERSION)
+                            return caches.open(CACHE_VERSION)
                                 .then(cache => {
-                                    // 最後に res を返せるように、ここでは clone() する必要がある
-                                    console.log('[sw] fetch response cache start', res.clone());
                                     cache.put(event.request.url, res.clone());
-                                    console.log('[sw] fetch response cache end');
                                     return res;
                                 })
                         })
