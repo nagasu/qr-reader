@@ -5,14 +5,16 @@ const CACHE_KEYS = [
 ];
 
 const STATIC_DATA = [
-    '/index.html',
-    '/favicon.ico',
     "/assets/english1.ogg",
     "/assets/english1.m4a",
     "/assets/english1.mp3",
-    "/js/jsQR.js",
+    "/css/app.css",
+    "/images/icons/apple-touch-icon.png",
+    "/js/app.js",
     "/js/howler.min.js",
-    "/js/app.js"
+    "/js/jsQR.js",
+    '/index.html',
+    '/favicon.ico',
 ];
 
 self.addEventListener('install', function(e) {

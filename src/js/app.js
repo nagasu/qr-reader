@@ -6,6 +6,8 @@ const PLAY_TIME = 1900; // 1単語の再生時間
 const WAITING_PLAY_TIME = PLAY_TIME + 1000; // 再生後の待ち時間
 
 window.onload = ()=>{
+    console.log("onload @@@");
+
 	snd = new Howl({
 		src: [
             "../assets/english1.ogg",
@@ -32,17 +34,6 @@ window.onload = ()=>{
 }
 
 SQR.reader = (() => {
-    /**
-     * getUserMedia()に非対応の場合は非対応の表示をする
-     */
-    const showUnsuportedScreen = () => {
-        document.querySelector('#js-unsupported').classList.add('is-show')
-    }
-    if (!navigator.mediaDevices) {
-        showUnsuportedScreen()
-        return
-    }
-
     const video = document.querySelector('#js-video')
 
     /**
@@ -50,7 +41,7 @@ SQR.reader = (() => {
      */
     const checkQRUseLibrary = () => {
         const canvas = document.querySelector('#js-canvas')
-        const ctx = canvas.getContext('2d')
+        const ctx = canvas.getContext('2d', { willReadFrequently: true })
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
         const code = jsQR(imageData.data, canvas.width, canvas.height)
@@ -83,12 +74,15 @@ SQR.reader = (() => {
     }
 
     const soundPlay = (data) => {
+        console.log("soundPlay", data);
+
         if (!data.startsWith('play')) {
             return
         }
 
         if (!playingList.includes(data)) {
             playingList.push(data);
+            console.log("soundPlay snd", snd);
             snd.play(data);
 
             // 5秒後に再度読み込めるようにする
@@ -102,26 +96,37 @@ SQR.reader = (() => {
      * BarcodeDetector APIを使えるかどうかで処理を分岐
      */
     const findQR = () => {
-        window.BarcodeDetector
-            ? checkQRUseBarcodeDetector()
-            : checkQRUseLibrary()
+        checkQRUseLibrary()
+        // window.BarcodeDetector
+        //     ? checkQRUseBarcodeDetector()
+        //     : checkQRUseLibrary()
     }
 
     /**
      * デバイスのカメラを起動
      */
     const initCamera = () => {
+        // navigator.mediaDevices
+        //     .getUserMedia({ video: { facingMode: 'environment' } })
+        // .then(stream => {
+        //     console.log('stream@@', stream)
+        //     video.srcObject = stream;
+        //     video.setAttribute('playsinline', true);  // iOS対応
+        //     video.play();
+        //     requestAnimationFrame(tick);
+        // });
+
         navigator.mediaDevices
             .getUserMedia({
                 audio: false,
                 video: {
-                    facingMode: {
-                        exact: 'environment',
-                    },
-                },
+                    facingMode: 'environment'
+                }
             })
             .then((stream) => {
+                console.log('stream', stream)
                 video.srcObject = stream
+                video.setAttribute('playsinline', true);  // iOS対応
                 video.onloadedmetadata = () => {
                     video.play()
                     findQR()
@@ -135,44 +140,6 @@ SQR.reader = (() => {
     return {
         initCamera,
         findQR,
-    }
-})()
-
-SQR.modal = (() => {
-    const result = document.querySelector('#js-result')
-    const link = document.querySelector('#js-link')
-    const copyBtn = document.querySelector('#js-copy')
-    const modal = document.querySelector('#js-modal')
-    const modalClose = document.querySelector('#js-modal-close')
-
-    /**
-     * 取得した文字列を入れ込んでモーダルを開く
-     */
-    const open = (url) => {
-        result.value = url
-        link.setAttribute('href', url)
-        modal.classList.add('is-show')
-    }
-
-    /**
-     * モーダルを閉じてQR読み込みを再開
-     */
-    const close = () => {
-        modal.classList.remove('is-show')
-        SQR.reader.findQR()
-    }
-
-    const copyResultText = () => {
-        result.select()
-        document.execCommand('copy')
-    }
-
-    copyBtn.addEventListener('click', copyResultText)
-
-    modalClose.addEventListener('click', () => close())
-
-    return {
-        open,
     }
 })()
 
