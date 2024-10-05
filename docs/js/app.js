@@ -3,8 +3,13 @@ window.SQR = window.SQR || {};
 let snd = null;
 let cameraFacing = true;
 const playingList = [];
-const PLAY_TIME = 1900; // 1単語の再生時間
+const PLAY_TIME = 1900; // 1単語の再生時間(2秒だと雑音が入るため1.9秒としている)
 const WAITING_PLAY_TIME = PLAY_TIME + 1000; // 再生後の待ち時間
+
+const spriteKeys = {};
+for (let i = 0; i < 150; i++) {
+  spriteKeys[`play${i + 1}`] = [i * 2000, PLAY_TIME];
+}
 
 window.onload = () => {
   snd = new Howl({
@@ -15,11 +20,7 @@ window.onload = () => {
     ],
     loop: false,
     volume: 1.0,
-    sprite: {
-      play1: [0, PLAY_TIME],
-      play2: [2000, PLAY_TIME],
-      play3: [4000, PLAY_TIME],
-    },
+    sprite: spriteKeys,
     onload: () => {
       console.log("サウンド準備完了");
       document.querySelector(".loading").remove();
