@@ -4,6 +4,8 @@ services:
       context: ./docker/web
     ports:
       - "${DOCKER_LISTEN_HOST}:80"
+      - 443:443
     volumes:
       - .:/usr/share/nginx/html
       - ./docker/web/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/web/certs:/etc/ssl/certs
