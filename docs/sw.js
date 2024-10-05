@@ -1,19 +1,6 @@
-var CACHE_VERSION = "qr-reader-v1.0.0_5";
+var CACHE_VERSION = "qr-reader-v1.0.0_6";
 
 const CACHE_KEYS = [CACHE_VERSION];
-
-// const STATIC_DATA = [
-//   "/qr-reader//assets/english1.ogg",
-//   "/qr-reader//assets/english1.m4a",
-//   "/qr-reader//assets/english1.mp3",
-//   "/qr-reader//css/app.css",
-//   "/qr-reader//images/icons/apple-touch-icon.png",
-//   "/qr-reader//js/app.js",
-//   "/qr-reader//js/howler.min.js",
-//   "/qr-reader//js/jsQR.js",
-//   "/qr-reader//index.html",
-//   "/qr-reader//favicon.ico",
-// ];
 
 const STATIC_DATA = [
   "./assets/english1.ogg",
