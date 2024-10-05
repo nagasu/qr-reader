@@ -1,18 +1,18 @@
-var CACHE_VERSION = "qr-reader-v1.0.0_5";
+var CACHE_VERSION = "qr-reader-v1.0.0_6";
 
 const CACHE_KEYS = [CACHE_VERSION];
 
 const STATIC_DATA = [
-  "/assets/english1.ogg",
-  "/assets/english1.m4a",
-  "/assets/english1.mp3",
-  "/css/app.css",
-  "/images/icons/apple-touch-icon.png",
-  "/js/app.js",
-  "/js/howler.min.js",
-  "/js/jsQR.js",
-  "/index.html",
-  "/favicon.ico",
+  "./assets/english1.ogg",
+  "./assets/english1.m4a",
+  "./assets/english1.mp3",
+  "./css/app.css",
+  "./images/icons/apple-touch-icon.png",
+  "./js/app.js",
+  "./js/howler.min.js",
+  "./js/jsQR.js",
+  "./index.html",
+  "./favicon.ico",
 ];
 
 self.addEventListener("install", function (e) {
