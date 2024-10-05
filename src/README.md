@@ -1,5 +1,3 @@
-# Simple QR Reader
+# QR Reader
 
-QR code reader made with PWA
-
-https://simple-qr.netlify.com/
+QR reader made with PWA
