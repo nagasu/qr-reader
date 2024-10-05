@@ -1,4 +1,4 @@
-var CACHE_VERSION = "qr-reader-v1.0.0_6";
+var CACHE_VERSION = "qr-reader-v0.1.0";
 
 const CACHE_KEYS = [CACHE_VERSION];
 
@@ -19,6 +19,7 @@ self.addEventListener("install", function (e) {
   console.log("[sw] install");
   e.waitUntil(
     caches.open(CACHE_VERSION).then(function (cache) {
+      self.skipWaiting();
       return cache.addAll(STATIC_DATA);
     })
   );
