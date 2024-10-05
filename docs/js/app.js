@@ -9,9 +9,9 @@ const WAITING_PLAY_TIME = PLAY_TIME + 1000; // 再生後の待ち時間
 window.onload = () => {
   snd = new Howl({
     src: [
-      "../assets/english1.ogg",
-      "../assets/english1.m4a",
-      "../assets/english1.mp3",
+      "/qr-reader/assets/english1.ogg",
+      "/qr-reader/assets/english1.m4a",
+      "/qr-reader/assets/english1.mp3",
     ],
     loop: false,
     volume: 1.0,
